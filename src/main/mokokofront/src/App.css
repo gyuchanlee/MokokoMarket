@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.main-bg {
+  height: 400px;
+  background-image: url("../public/img/토끼공장.gif");
+  background-size: cover;
+  background-position: center;
+}
+
+.wrapper{
+  height : 100%;
+}
+
+.footer{
+  position : relative;
+  transform : translateY(-100%);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
