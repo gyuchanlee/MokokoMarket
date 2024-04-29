@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import {Col, Pagination, Row, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import {getBoardList} from "../../service/Axios";
 // import boardList from "../../tempData/boardList";
 
 const Community = () => {
@@ -10,11 +11,15 @@ const Community = () => {
     let [boardList, setBoardList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/boards')
-            .then((res) => {
-                console.log(res.data);
-                setBoardList(res.data);
-            })
+        const fetchData = async () => {
+            try {
+                const data = await getBoardList(); // getBoardList 함수를 호출하여 데이터를 가져옴
+                setBoardList(data); // 가져온 데이터를 상태에 설정
+            } catch (error) {
+                console.error('Error fetching board list:', error);
+            }
+        };
+        fetchData();
     }, [])
 
     return (
@@ -28,7 +33,7 @@ const Community = () => {
                 </Col>
                 <Col xs="auto">
                     <span className="mx-1">&middot;</span>
-                    <Link to="/boards/insert" className="small" style={{ textDecoration: 'none', color: 'black' }}>
+                    <Link to="/community/write" className="small" style={{ textDecoration: 'none', color: 'black' }}>
                         글 쓰기
                     </Link>
                     <span className="mx-1">&middot;</span>

@@ -2,16 +2,21 @@ import {Container, Row} from "react-bootstrap";
 import {useState} from "react";
 import data from "../tempData/data.js"
 import ItemCard from "../components/ItemCard";
+import {useNavigate} from "react-router-dom";
+import NavLayout from "../layout/NavLayout";
+import FooterLayout from "../layout/FooterLayout";
 
-const Main = (props) => {
+const Main = () => {
 
-    let navigate = props.navigate;
+    let navigate = useNavigate();
     // 메인에 보여줄 리스트
     const [items, setItems] = useState(data);
 
 
     return (
         <>
+            <NavLayout/>
+
             <div className='main-bg'></div>
             <div>
                 <Container>
@@ -27,6 +32,8 @@ const Main = (props) => {
                     </Row>
                 </Container>
             </div>
+
+            <FooterLayout/>
         </>
     )
  }

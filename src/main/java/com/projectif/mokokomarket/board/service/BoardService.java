@@ -23,7 +23,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     public List<Board> getBoardList() {
-        return boardRepository.findAll();
+        return boardRepository.findAllByIsDeletedIs(false);
     }
 
     public Board getBoard(Long id) {

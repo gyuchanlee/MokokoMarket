@@ -1,27 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Table, Form, Button } from 'react-bootstrap';
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {deleteBoard, getBoardList, getBoardOne} from "../../service/Axios";
 
 const BoardDetails = () => {
 
     // const isOwnBoard = board.memberName === sessionStorage.getItem('name') && board.memberPk === memberPk;
 
     let {id} = useParams();
+    const navigate = useNavigate();
 
     const [board, setBoard] = useState({});
 
     useEffect(() => {
-        axios.get('http://localhost:8080/boards/'+id)
-            .then((response) => {
-                setBoard(response.data);
-            });
+        const fetchData = async () => {
+            try {
+                const data = await getBoardOne(id); // getBoardList 함수를 호출하여 데이터를 가져옴
+                setBoard(data); // 가져온 데이터를 상태에 설정
+            } catch (error) {
+                console.error('Error fetching board one:', error);
+            }
+        };
+        fetchData();
     }, []);
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (window.confirm('정말로 삭제하시겠습니까? 한번 삭제하면 다시 되돌릴 수 없습니다.')) {
             // 삭제 axios 날리기
-            alert("삭제 했다 쳐")
+            const isDeleted = await deleteBoard(id);
+            if (isDeleted) {
+                alert('삭제되었습니다')
+                navigate(`/community`);
+            } else {
+                alert('삭제 실패했습니다')
+            }
         }
     };
 
