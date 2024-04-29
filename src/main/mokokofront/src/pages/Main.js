@@ -5,6 +5,7 @@ import ItemCard from "../components/ItemCard";
 import {useNavigate} from "react-router-dom";
 import NavLayout from "../layout/NavLayout";
 import FooterLayout from "../layout/FooterLayout";
+import DefaultLayout from "../layout/DefaultLayout";
 
 const Main = () => {
 
@@ -14,28 +15,23 @@ const Main = () => {
 
 
     return (
-        <>
-            <NavLayout/>
-
+        <DefaultLayout>
             <div className='main-bg'></div>
             <div>
                 <Container>
                     <Row md={4}>
                         {
-                            items.map((item, index) => {
+                            items.map((item) => {
                                 return (
                                     <ItemCard item={item} navigate={navigate} key={item.id}></ItemCard>
                                 )
                             })
-
                         }
                     </Row>
                 </Container>
             </div>
-
-            <FooterLayout/>
-        </>
+        </DefaultLayout>
     )
- }
- 
- export default Main;
+}
+
+export default Main;
