@@ -1,0 +1,27 @@
+/* BoardForm.css */
+.board-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.board-form {
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.submit-btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.back-btn {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #6c757d;
+}

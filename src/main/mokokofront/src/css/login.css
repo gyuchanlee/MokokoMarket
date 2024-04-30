@@ -1,0 +1,10 @@
+/* Login.css */
+.login-card {
+    max-width: 400px;
+    width: 100%;
+}
+
+.submit-btn {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+}
