@@ -25,7 +25,7 @@ const Cart = () => {
                                 <td>{cart.title}</td>
                                 <td>{cart.count}</td>
                                 <td>
-                                    <button onClick={() => {alert("ㅎㅇ")}}>
+                                    <button onClick={() => {alert("반갑다")}}>
                                         그냥버튼
                                     </button>
                                 </td>

@@ -10,7 +10,7 @@ let CartInfo = createSlice({
             console.log('find =', find);
             if (find !== -1) {
                 state[find].count += 1;
-                alert('장바구니에 더 담았습니다');
+                alert('장바구니에 더 담았수');
                 return;
             }
 
@@ -21,7 +21,7 @@ let CartInfo = createSlice({
             };
 
             state.push(newItem);
-            alert('장바구니에 담았습니다');
+            alert('장바구니에 담았소');
         }
     }
 })

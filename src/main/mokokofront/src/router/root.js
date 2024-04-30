@@ -1,16 +1,19 @@
 import React, {lazy, Suspense} from 'react';
+import Login from "../pages/login/Login";
+import ItemListBestSeller from "../pages/items/ItemListBestSeller";
 
 
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = () => <>Loading...</>;
 const Main = lazy(() => import('./../pages/Main'));
-const BoardDetails = lazy(() => import('./../pages/community/BoardDetails'));
-const BoardWrite = lazy(() => import('./../pages/community/BoardWrite'));
+const BoardDetails = lazy(() => import('../pages/boards/BoardDetails'));
+const BoardWrite = lazy(() => import('../pages/boards/BoardWrite'));
 const Cart = lazy(() => import('./../pages/Cart'));
-const ItemListPerBrand = lazy(() => import('./../pages/ItemListPerBrand'));
-const ItemDetails = lazy(() => import('./../pages/ItemDetails'));
-const Community = lazy(() => import('./../pages/community/Community'));
+const ItemListPerBrand = lazy(() => import('../pages/items/ItemListPerBrand'));
+const ItemDetails = lazy(() => import('../pages/items/ItemDetails'));
+const BoardList = lazy(() => import('../pages/boards/BoardList'));
+const Error400 = lazy(() => import('./../pages/Error400'));
 
 const root = createBrowserRouter([
     {
@@ -18,16 +21,20 @@ const root = createBrowserRouter([
         element:<Suspense fallback={Loading}><Main/></Suspense>
     },
     {
-        path:"/community",
-        element:<Suspense fallback={Loading}><Community/></Suspense>
+        path:"/login",
+        element:<Suspense fallback={Loading}><Login/></Suspense>
+    },
+    // 나중에 children: communityRouter()로 빼기
+    {
+        path:"/boards",
+        element:<Suspense fallback={Loading}><BoardList/></Suspense>
     },
     {
-        // 나중에 children: communityRouter()로 빼기
-        path:"/community/:id",
+        path:"/boards/:id",
         element:<Suspense fallback={Loading}><BoardDetails/></Suspense>
     },
     {
-        path:"/community/write",
+        path:"/boards/write",
         element:<Suspense fallback={Loading}><BoardWrite/></Suspense>
     },
     {
@@ -44,15 +51,11 @@ const root = createBrowserRouter([
     },
     {
         path:"/items/bestSeller",
-        element:<Suspense fallback={Loading}>
-            <div>여기 베스트 상품 리스트</div>
-        </Suspense>
+        element:<Suspense fallback={Loading}><ItemListBestSeller/></Suspense>
     },
     {
         path:"*",
-        element: <Suspense fallback={Loading}>
-            <div>400 Error</div>
-        </Suspense>
+        element: <Suspense fallback={Loading}><Error400/></Suspense>
     },
 ]);
 

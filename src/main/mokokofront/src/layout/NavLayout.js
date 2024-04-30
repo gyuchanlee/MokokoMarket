@@ -18,7 +18,7 @@ const NavLayout = () => {
                     <Nav className="me-auto">
                         <Nav.Link onClick={ () => navigate('/') }>MyPage</Nav.Link>
                         <Nav.Link onClick={ () => navigate('/cart') }>Cart</Nav.Link>
-                        <Nav.Link onClick={ () => navigate('/community') }>Community</Nav.Link>
+                        <Nav.Link onClick={ () => navigate('/boards') }>Community</Nav.Link>
                         <NavDropdown title="Shopping" id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={ () => navigate('/items?brand=mokoko') }>모코코</NavDropdown.Item>
                             <NavDropdown.Item onClick={ () => navigate('/items?brand=manggom') }>
@@ -30,7 +30,7 @@ const NavLayout = () => {
                                 Best Seller
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link onClick={ () => navigate('/') }>회원 가입</Nav.Link>
+                        <Nav.Link onClick={ () => navigate('/login') }>Log In</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
