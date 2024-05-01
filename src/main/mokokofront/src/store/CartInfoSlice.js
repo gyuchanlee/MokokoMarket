@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-let CartInfo = createSlice({
+const CartInfo = createSlice({
     name: 'CartInfo',
     initialState : [],
     reducers : {

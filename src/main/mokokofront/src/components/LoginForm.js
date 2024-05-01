@@ -1,17 +1,32 @@
 import {Button, Card, Form, Container} from "react-bootstrap";
 import React, {useState} from "react";
 import './../css/login.css'
+import {login} from "../api/axios";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {addSessionInfo} from "../store/SessionInfoSlice";
 
-const LoginForm = () => {
+const LoginForm = message => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(`Username: ${username}, Password: ${password}`);
         // 로그인 axios
-        alert(`username: ${username}, Password: ${password}`);
+        const result = await login({username, password});
+        console.log('result = ', result);
+        if (result.userId === undefined) {
+            alert('로그인 실패');
+            window.location.reload();
+        } else {
+            await dispatch(addSessionInfo(result));
+            alert('로그인 성공');
+            navigate('/');
+        }
     };
 
     return (

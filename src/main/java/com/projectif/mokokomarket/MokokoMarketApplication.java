@@ -3,7 +3,9 @@ package com.projectif.mokokomarket;
 import com.projectif.mokokomarket.board.domain.Board;
 import com.projectif.mokokomarket.board.domain.Brand;
 import com.projectif.mokokomarket.board.repository.BoardRepository;
+import com.projectif.mokokomarket.member.domain.LoginType;
 import com.projectif.mokokomarket.member.domain.Member;
+import com.projectif.mokokomarket.member.domain.Role;
 import com.projectif.mokokomarket.member.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,8 @@ public class MokokoMarketApplication {
                             .password("1234")
                             .email("test" + i + "@gmail.com")
                             .phone("010-1234-123" + i)
+                            .role(Role.USER)
+                            .loginType(LoginType.BASIC)
                             .build()
             );
         }

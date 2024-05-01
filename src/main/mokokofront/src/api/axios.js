@@ -3,7 +3,15 @@ import axios from "axios";
 // async - await : 비동기처럼 쓰고 싶을 때 (ES6임) -> 페이지 로딩될때 순서 보장이 필요할때 쓰면 좋을듯 (대부분 이거 쓰면 될듯함)
 // 이거 끌어다 쓰는 쪽 BoardList.js 나 BoardDetails.js 이런 쪽에서 적용해서 쓰면 좋을듯
 const API_SERVER_HOST = `http://localhost:8080`;
+const headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Access-Control-Allow-Origin": `http://localhost:3000`,
+    'Access-Control-Allow-Credentials':"true",
+}
 
+// Axios 기본 설정 -> login 요청 후, session 값 받아오기 (세션 값 받아오기 위한 설정)
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
+axios.defaults.baseURL = API_SERVER_HOST;
 
 // Board 한 건 조회
 export const getBoardOne = (id) => {
@@ -78,6 +86,21 @@ export const login = (dto) => {
     return axios.post(`${API_SERVER_HOST}/login`, {
         username: dto.username,
         password: dto.password,
+    }, {
+        headers : headers
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+// logout 로직 post
+export const logout = () => {
+    return axios.post(`${API_SERVER_HOST}/logout`, {}, {
+        headers : headers
     })
         .then((response) => {
             return response.data;

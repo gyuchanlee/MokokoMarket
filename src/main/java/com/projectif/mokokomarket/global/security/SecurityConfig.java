@@ -12,9 +12,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
 
@@ -26,7 +32,7 @@ public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint =
             (request, response, authException) -> {
-                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security 인증 실패!!!");
+                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security 인증 실패");
 
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.sendRedirect("/login");
@@ -41,7 +47,7 @@ public class SecurityConfig {
 
     private final AccessDeniedHandler accessDeniedHandler =
             (request, response, accessDeniedException) -> {
-                ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security 인가 실패!!!");
+                ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security 인가 실패");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 String json = new ObjectMapper().writeValueAsString(fail);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -57,9 +63,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
+                .addFilter(corsFilter())
                 .formLogin(form -> form
-                                .successForwardUrl("/loginSuccess")
-                                .failureForwardUrl("/loginFailure")
+                                .successForwardUrl("/login/success")
+                                .failureForwardUrl("/login/failure")
                                 .permitAll()
                 )
 //                .oauth2Login(oauth2 -> {
@@ -68,13 +75,14 @@ public class SecurityConfig {
 //                    oauth2.failureUrl("/login/oauth2/fail");
 //                })
                 .logout(logoutConfigurer -> {
-                    logoutConfigurer.logoutSuccessUrl("/");
+                    logoutConfigurer.logoutSuccessHandler(logoutSuccessHandler());
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
                     logoutConfigurer.deleteCookies("JSESSIONID");
                 })
                 .authorizeHttpRequests((authorizeRequests) ->
                                 authorizeRequests
                                         .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                        .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**").permitAll()
                                         .anyRequest().permitAll()
                 )
                 .sessionManagement((sessionManagement) ->
@@ -93,6 +101,39 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return (String) rawPassword;
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return String.valueOf(rawPassword).equals(encodedPassword);
+            }
+        };
+    }
+
+    @Bean
+    LogoutSuccessHandler logoutSuccessHandler() {
+        return new LogoutSuccessHandler();
+    }
+
+    @Bean
+    CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000"); // React 애플리케이션의 origin
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 

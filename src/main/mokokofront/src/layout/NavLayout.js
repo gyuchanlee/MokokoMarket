@@ -3,12 +3,18 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import {useNavigate} from "react-router-dom";
-import {root} from "./../router/root";
+import {logout} from "../api/axios";
 
 const NavLayout = () => {
 
     const navigate = useNavigate();
 
+    const logoutLogic = async () => {
+        const result = await logout();
+        alert(result);
+        // 로그 아웃 성공 -> 세션으로 받았던 정보들 초기화하기
+    }
+    
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
@@ -31,6 +37,7 @@ const NavLayout = () => {
                             </NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={ () => navigate('/login') }>Log In</Nav.Link>
+                        <Nav.Link onClick={ () => logoutLogic() }>Log Out</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
