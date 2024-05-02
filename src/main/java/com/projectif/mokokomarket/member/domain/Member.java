@@ -3,6 +3,8 @@ package com.projectif.mokokomarket.member.domain;
 import com.projectif.mokokomarket.board.domain.Board;
 import com.projectif.mokokomarket.global.auditing.BaseEntity;
 import com.projectif.mokokomarket.member.dto.request.MemberUpdateDto;
+import com.projectif.mokokomarket.order.domain.Cart;
+import com.projectif.mokokomarket.order.domain.Order;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +36,10 @@ public class Member extends BaseEntity implements UserDetails {
     private LoginType loginType;
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Board> boardList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Order> orderList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Cart> cartList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

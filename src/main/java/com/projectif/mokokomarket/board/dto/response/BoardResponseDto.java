@@ -1,6 +1,6 @@
 package com.projectif.mokokomarket.board.dto.response;
 
-import com.projectif.mokokomarket.board.domain.Brand;
+import com.projectif.mokokomarket.item.domain.Brand;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +15,7 @@ public class BoardResponseDto {
     private Brand category;
     private Integer level;
     private Long memberId;
+    private String userId;
     private LocalDateTime createdDateTime;
     private LocalDateTime modifiedDateTime;
 }

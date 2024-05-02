@@ -1,23 +1,22 @@
-import {configureStore, createSlice} from '@reduxjs/toolkit';
+import {combineReducers, configureStore, createSlice} from '@reduxjs/toolkit';
 import CartInfo from "./store/CartInfoSlice";
 import SessionInfo from "./store/SessionInfoSlice";
+import {persistReducer} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-let example = createSlice({
-    name: 'example',
-    initialState: '예시 기본 string',
-    reducers : {
-        setExample: (state, action) => {
-            state.example = action.payload;
-        }
-    }
+const reducers = combineReducers({
+    CartInfo : CartInfo.reducer,
+    SessionInfo : SessionInfo.reducer,
 });
 
-export let { setExample }  = example.actions;
+const persistConfig = {
+    key: 'root',
+    storage, // localStorage 기본 할당
+    whitelist: [ 'CartInfo', 'SessionInfo' ],
+};
+
+const persistedReducers = persistReducer(persistConfig, reducers);
 
 export default configureStore({
-    reducer: {
-        example : example.reducer,
-        CartInfo : CartInfo.reducer,
-        SessionInfo : SessionInfo.reducer,
-    }
+    reducer: persistedReducers
 })

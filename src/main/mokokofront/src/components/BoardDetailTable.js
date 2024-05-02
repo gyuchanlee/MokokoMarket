@@ -2,14 +2,16 @@ import {Button, Col, Form, Row, Table} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {deleteBoard, getBoardOne} from "../api/axios";
 import {useNavigate, useParams} from "react-router-dom";
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
 const BoardDetailTable = () => {
 
     // const isOwnBoard = board.memberName === sessionStorage.getItem('name') && board.memberPk === memberPk;
     const {id} = useParams();
     const navigate = useNavigate();
-
     const [board, setBoard] = useState({});
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +24,14 @@ const BoardDetailTable = () => {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const viewer = new Viewer({
+            el: document.querySelector('#viewer'),
+            height: '600px',
+            initialValue: board.content || '업로드중...'
+        });
+    }, [board]);
 
     const handleDelete = async () => {
         if (window.confirm('정말로 삭제하시겠습니까? 한번 삭제하면 다시 되돌릴 수 없습니다.')) {
@@ -58,12 +68,13 @@ const BoardDetailTable = () => {
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td colSpan="3" style={{ textAlign: 'center' }}>{board.memberId}</td>
+                    <td colSpan="3" style={{ textAlign: 'center' }}>{board.userId}</td>
                 </tr>
                 <tr>
                     <th>내용</th>
                     <td colSpan="3">
-                        <Form.Control as="textarea" value={board.content} readOnly style={{ height: '300px' }} />
+                        {/*<Form.Control as="textarea" value={board.content} readOnly style={{ height: '300px' }} />*/}
+                        <div id="viewer" style={{textAlign: 'left'}}/>
                     </td>
                 </tr>
                 </tbody>

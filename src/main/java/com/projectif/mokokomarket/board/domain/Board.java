@@ -2,12 +2,10 @@ package com.projectif.mokokomarket.board.domain;
 
 import com.projectif.mokokomarket.board.dto.request.BoardUpdateRequestDto;
 import com.projectif.mokokomarket.global.auditing.BaseEntity;
+import com.projectif.mokokomarket.item.domain.Brand;
 import com.projectif.mokokomarket.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Entity

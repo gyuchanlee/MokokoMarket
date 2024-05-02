@@ -7,4 +7,18 @@
 .submit-btn {
     background-color: #ff6b6b;
     border-color: #ff6b6b;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.signup-btn {
+    margin-top: 1rem;
+    width: 100%;
+    background-color: #6c757d; /* Bootstrap 기본 회색 색상 */
+    border-color: #6c757d;
+}
+
+.signup-btn:hover {
+    background-color: #5a6268; /* 좀 더 어두운 회색 */
+    border-color: #545b62;
 }

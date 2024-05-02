@@ -1,7 +1,7 @@
 package com.projectif.mokokomarket;
 
 import com.projectif.mokokomarket.board.domain.Board;
-import com.projectif.mokokomarket.board.domain.Brand;
+import com.projectif.mokokomarket.item.domain.Brand;
 import com.projectif.mokokomarket.board.repository.BoardRepository;
 import com.projectif.mokokomarket.member.domain.LoginType;
 import com.projectif.mokokomarket.member.domain.Member;

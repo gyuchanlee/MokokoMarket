@@ -23,7 +23,7 @@ const LoginForm = message => {
             alert('로그인 실패');
             window.location.reload();
         } else {
-            await dispatch(addSessionInfo(result));
+            dispatch(addSessionInfo(result));
             alert('로그인 성공');
             navigate('/');
         }
@@ -56,6 +56,9 @@ const LoginForm = message => {
 
                         <Button variant="primary" type="submit" className="submit-btn">
                             Login
+                        </Button>
+                        <Button variant="secondary" className="signup-btn" onClick={() => navigate('/members/join')}>
+                            Sign Up
                         </Button>
                     </Form>
                 </Card.Body>

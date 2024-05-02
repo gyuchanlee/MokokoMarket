@@ -4,8 +4,6 @@ import React, {useRef} from "react";
 import {writeBoard} from "../api/axios";
 import './../css/BoardWriteForm.css';
 import TuiEditor from "./TuiEditor";
-import { Editor } from '@toast-ui/editor';
-import {current} from "@reduxjs/toolkit";
 
 const BoardWriteForm = () => {
 
@@ -77,9 +75,9 @@ const BoardWriteForm = () => {
                         <Button variant="dark" type="submit" className="submit-btn">
                             등록 완료
                         </Button>
-                        <Link to="/boards" className="btn btn-secondary back-btn">
+                        <Button onClick={() => {navigate("/boards")}} className="btn btn-secondary back-btn">
                             뒤로 가기
-                        </Link>
+                        </Button>
                     </Col>
                 </Row>
             </Form>

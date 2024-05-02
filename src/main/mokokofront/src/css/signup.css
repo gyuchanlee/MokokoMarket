@@ -1,0 +1,16 @@
+/* signup.css */
+.signup-card {
+    max-width: 400px;
+    width: 100%;
+}
+
+.submit-btn {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 576px) {
+    .signup-card {
+        margin: 1rem;
+    }
+}

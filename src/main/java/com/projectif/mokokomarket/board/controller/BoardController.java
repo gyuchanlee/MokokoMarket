@@ -30,6 +30,7 @@ public class BoardController {
                     .category(board.getCategory())
                     .level(board.getLevel())
                     .memberId(board.getMember().getId())
+                     .userId(board.getMember().getUserId())
                     .createdDateTime(board.getCreatedDateTime())
                     .modifiedDateTime(board.getModifiedDateTime())
                     .build()
@@ -47,6 +48,7 @@ public class BoardController {
                 .category(board.getCategory())
                 .level(board.getLevel())
                 .memberId(board.getMember().getId())
+                .userId(board.getMember().getUserId())
                 .createdDateTime(board.getCreatedDateTime())
                 .modifiedDateTime(board.getModifiedDateTime())
                 .build();

@@ -3,10 +3,12 @@ import {Link} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import {useEffect, useState} from "react";
 import {getBoardList} from "../api/axios";
+import {useSelector} from "react-redux";
 
 const GetBoardList = () => {
 
     let [boardList, setBoardList] = useState([]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +24,7 @@ const GetBoardList = () => {
 
     return (
         <Container className="board-container">
-            <h1>굿즈 자랑 갤러리</h1>
+            <h1>상품 갤러리</h1>
             <br />
             <br />
             <Row className="align-items-center justify-content-between flex-column flex-sm-row">
@@ -60,7 +62,7 @@ const GetBoardList = () => {
                                 <p>{board.title}</p>
                             </td>
                             <td>{board.category}</td>
-                            <td>{board.memberId}</td>
+                            <td>{board.userId}</td>
                             <td>{new Date(board.createdDateTime).toLocaleDateString('ko-KR')}</td>
                             <td>{new Date(board.modifiedDateTime).toLocaleDateString('ko-KR')}</td>
                         </tr>

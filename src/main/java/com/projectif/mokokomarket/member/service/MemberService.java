@@ -1,6 +1,8 @@
 package com.projectif.mokokomarket.member.service;
 
+import com.projectif.mokokomarket.member.domain.LoginType;
 import com.projectif.mokokomarket.member.domain.Member;
+import com.projectif.mokokomarket.member.domain.Role;
 import com.projectif.mokokomarket.member.dto.request.MemberJoinDto;
 import com.projectif.mokokomarket.member.dto.request.MemberUpdateDto;
 import com.projectif.mokokomarket.member.repository.MemberRepository;
@@ -42,6 +44,8 @@ public class MemberService implements UserDetailsService {
                         .password(dto.getPassword())
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
+                        .role(Role.valueOf(dto.getRole()))
+                        .loginType(LoginType.valueOf(dto.getLoginType()))
                         .build()
         );
         return save.getId() != null;

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import * as state from "./SessionInfoSlice";
 
 const SessionInfo = createSlice({
     name: 'SessionInfo',
@@ -20,13 +21,16 @@ const SessionInfo = createSlice({
             state.phone = action.payload.phone;
             state.role = action.payload.role;
             state.loginType = action.payload.loginType;
-            console.log('=============================')
-            console.log(state);
         },
-
-        deleteSessionInfo: (state) => {
-            state = {};
-        }
+        deleteSessionInfo: (state) => ({
+            memberId: "",
+            userId: "",
+            name: "",
+            email: "",
+            phone: "",
+            role: "",
+            loginType: "",
+        }),
     }
 })
 

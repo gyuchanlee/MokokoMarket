@@ -1,6 +1,6 @@
 package com.projectif.mokokomarket.board.dto.request;
 
-import com.projectif.mokokomarket.board.domain.Brand;
+import com.projectif.mokokomarket.item.domain.Brand;
 import lombok.Data;
 
 @Data

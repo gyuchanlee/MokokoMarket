@@ -14,6 +14,7 @@ const ItemListPerBrand = lazy(() => import('../pages/items/ItemListPerBrand'));
 const ItemDetails = lazy(() => import('../pages/items/ItemDetails'));
 const BoardList = lazy(() => import('../pages/boards/BoardList'));
 const Error400 = lazy(() => import('./../pages/Error400'));
+const MemberJoin = lazy(() => import('./../pages/members/MemberJoin'));
 
 const root = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const root = createBrowserRouter([
     {
         path:"/items/bestSeller",
         element:<Suspense fallback={Loading}><ItemListBestSeller/></Suspense>
+    },
+    {
+        path:"/members/join",
+        element:<Suspense fallback={Loading}><MemberJoin/></Suspense>
     },
     {
         path:"*",

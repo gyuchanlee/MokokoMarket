@@ -1,27 +1,53 @@
-/* BoardForm.css */
+/* BoardWriteForm.css */
 .board-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    text-align: left;
 }
 
 .board-form {
-    max-width: 900px;
-    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-    background-color: #f8f9fa;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.submit-btn,
+.back-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    width: 120px;
+    text-align: center;
 }
 
 .submit-btn {
-    background-color: #6c757d;
-    border-color: #6c757d;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    margin-right: 0.5rem;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
 }
 
 .back-btn {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    border-color: #6c757d;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
 }

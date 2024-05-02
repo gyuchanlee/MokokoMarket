@@ -7,6 +7,7 @@ import com.projectif.mokokomarket.member.dto.response.MemberResponseDto;
 import com.projectif.mokokomarket.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,13 +34,13 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("")
-    public boolean joinMember(@RequestBody MemberJoinDto dto) {
+    public boolean joinMember(@RequestBody @Validated MemberJoinDto dto) {
         return memberService.join(dto);
     }
 
     // 회원 수정
     @PutMapping("/{id}")
-    public boolean updateMember(@RequestBody MemberUpdateDto dto, @PathVariable("id") Long id) {
+    public boolean updateMember(@RequestBody @Validated MemberUpdateDto dto, @PathVariable("id") Long id) {
         return memberService.update(dto, id);
     }
 

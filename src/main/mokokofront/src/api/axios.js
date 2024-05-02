@@ -3,8 +3,14 @@ import axios from "axios";
 // async - await : 비동기처럼 쓰고 싶을 때 (ES6임) -> 페이지 로딩될때 순서 보장이 필요할때 쓰면 좋을듯 (대부분 이거 쓰면 될듯함)
 // 이거 끌어다 쓰는 쪽 BoardList.js 나 BoardDetails.js 이런 쪽에서 적용해서 쓰면 좋을듯
 const API_SERVER_HOST = `http://localhost:8080`;
-const headers = {
+const defaultHeaders = {
     "Content-Type": "application/x-www-form-urlencoded",
+    "Access-Control-Allow-Origin": `http://localhost:3000`,
+    'Access-Control-Allow-Credentials':"true",
+}
+
+const jsonHeaders = {
+    "Content-Type": "application/json",
     "Access-Control-Allow-Origin": `http://localhost:3000`,
     'Access-Control-Allow-Credentials':"true",
 }
@@ -21,7 +27,7 @@ export const getBoardOne = (id) => {
         })
         .catch((error) => {
             console.error(error);
-            throw error; // 에러를 다시 던져서 호출한 쪽에서 처리할 수 있도록 함
+            return error.response.data;
         });
 }
 
@@ -31,9 +37,9 @@ export const getBoardList = () => {
         .then((response) => {
             return response.data;
         })
-        .catch((e) => {
-            console.error(e);
-            throw e;
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
         });
 }
 
@@ -51,6 +57,7 @@ export const writeBoard = (dto) => {
         })
         .catch((error) => {
             console.error(error);
+            return error.response.data;
         });
 }
 
@@ -66,6 +73,7 @@ export const updateBoard = (dto, id) => {
         })
         .catch((error) => {
             console.error(error);
+            return error.response.data;
         });
 }
 
@@ -77,7 +85,7 @@ export const deleteBoard = (id) => {
         })
         .catch((e) => {
             console.error(e);
-            throw e;
+            return e.response.data;
         });
 }
 
@@ -87,25 +95,53 @@ export const login = (dto) => {
         username: dto.username,
         password: dto.password,
     }, {
-        headers : headers
+        headers : defaultHeaders
     })
         .then((response) => {
             return response.data;
         })
         .catch((error) => {
             console.error(error);
+            return error.response.data;
         });
 }
 
 // logout 로직 post
 export const logout = () => {
     return axios.post(`${API_SERVER_HOST}/logout`, {}, {
-        headers : headers
+        headers : defaultHeaders
     })
         .then((response) => {
             return response.data;
         })
         .catch((error) => {
             console.error(error);
+            return error.response.data;
         });
 }
+
+// 회원 가입 POST -> 기본 사용자 가입 페이지용
+export const joinMember = (dto) => {
+    return axios.post(`${API_SERVER_HOST}/members`, {
+        userId: dto.userId,
+        name: dto.name,
+        email: dto.email,
+        phone: dto.phone,
+        password: dto.password,
+        role: 'USER',
+        loginType: 'BASIC',
+    }, {
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 회원 수정 PUT
+
+// 회원 탈퇴 DELETE
