@@ -33,4 +33,10 @@ public class Cart extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    // 연관관계 편의 메서드
+    public void addToOrder(Order order) {
+        this.order = order;
+//        order.getCartList().add(this);
+    }
 }
