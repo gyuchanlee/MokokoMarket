@@ -143,5 +143,105 @@ export const joinMember = (dto) => {
 }
 
 // 회원 수정 PUT
+export const updateMember = (dto, id) => {
+    return axios.put(`${API_SERVER_HOST}/members/${id}`, {
+        name: dto.name,
+        email: dto.email,
+        phone: dto.phone,
+        password: dto.password,
+    }, {
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
 
 // 회원 탈퇴 DELETE
+export const deleteMember = (id) => {
+    return axios.delete(`${API_SERVER_HOST}/members/${id}`,{
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 주문 리스트 조회
+export const getOrder = () => {
+    return axios.get(`${API_SERVER_HOST}/orders`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 결제 완료 -> 주문 한 건 생성
+export const createOrder = (dto) => {
+    return axios.post(`${API_SERVER_HOST}/orders`, {
+        memberId: dto.memberId,
+        paymentMethod: dto.paymentMethod,
+        totalPrice: dto.totalPrice,
+        requests: dto.requests,
+        orderStatus: dto.orderStatus,
+        cartList: dto.cartList, // CartCreateDto 배열 형식이여야 함
+    }, {
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 회원 주문 한 건 취소
+export const cancelOrder = (id) => {
+    return axios.delete(`${API_SERVER_HOST}/orders/${id}`,{
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 상품 리스트 전체 조회
+export const getItems = () => {
+    return axios.get(`${API_SERVER_HOST}/items`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 상품 한건 조회
+export const getItem = (id) => {
+    return axios.get(`${API_SERVER_HOST}/items/${id}`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}

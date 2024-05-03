@@ -6,26 +6,37 @@ const CartInfo = createSlice({
     reducers : {
         addItemToCart: (state, action) => {
 
-            let find = state.findIndex(cart => cart.id === action.payload.id); // 못찾으면 -1 나오는듯
+            let find = state.findIndex(cart => cart.itemId === action.payload.itemId); // 못찾으면 -1 나오는듯
             console.log('find =', find);
             if (find !== -1) {
+                if (state[find].count >= action.payload.quantity) {
+                    alert(`재고가 부족합니다.`);
+                    return;
+                }
                 state[find].count += 1;
-                alert('장바구니에 더 담았수');
+                console.log(state[find].count);
+                console.log(action.payload.quantity);
+                alert(`장바구니에 더 담았습니다. 총 개수 = ${state[find].count}`);
                 return;
             }
 
             let newItem = {
-                id : action.payload.id,
+                itemId : action.payload.itemId,
                 title : action.payload.title,
+                content : action.payload.content,
+                imageSource : action.payload.imageSource,
+                brand : action.payload.brand,
+                price: action.payload.price,
                 count : 1
             };
 
             state.push(newItem);
-            alert('장바구니에 담았소');
-        }
+            alert('장바구니에 담았습니다');
+        },
+        resetCart: () => []
     }
 })
 
-export let {addItemToCart} = CartInfo.actions;
+export let {addItemToCart, resetCart} = CartInfo.actions;
 
 export default CartInfo;

@@ -33,13 +33,17 @@ public class Order extends BaseEntity {
     private List<Cart> cartList = new ArrayList<>();
 
     @Builder
-    public Order(String paymentMethod, Integer totalPrice, String requests, OrderStatus status, Member member, List<Cart> cartList) {
+    public Order(String paymentMethod, Integer totalPrice, String requests, OrderStatus status, Member member) {
         this.paymentMethod = paymentMethod;
         this.totalPrice = totalPrice;
         this.requests = requests;
         this.status = status;
         this.member = member;
-        this.cartList = cartList;
+    }
+
+    // 장바구니 상품 추가 메서드
+    public void addCart(Cart cart) {
+        cart.addToOrder(this);
     }
 
     // 총 가격 계산
@@ -47,6 +51,18 @@ public class Order extends BaseEntity {
         totalPrice = 0;
         for (Cart cart : cartList) {
             totalPrice += (cart.getItem().getPrice() * cart.getCount());
+        }
+    }
+
+    // 주문 취소 메서드
+    public void cancelOrder() {
+        if (status.equals(OrderStatus.READY)) {
+            // 주문 상태 취소
+            status = OrderStatus.CANCELED;
+            // 장바구니 아이템 취소
+            for (Cart cart : cartList) {
+                cart.cancelCart();
+            }
         }
     }
 }

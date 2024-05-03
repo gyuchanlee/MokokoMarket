@@ -1,16 +1,30 @@
 import {Container, Row} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import data from "../tempData/data.js"
 import ItemCard from "../components/ItemCard";
 import {useNavigate} from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
 import {useSelector} from "react-redux";
+import {getItems} from "../api/axios";
 
 const Main = () => {
 
     let navigate = useNavigate();
     // 메인에 보여줄 리스트
-    const [items, setItems] = useState(data);
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getItems();
+                console.log(data);
+                setItems(data);
+            } catch (error) {
+                console.error('Failed to fetch item data:', error);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <DefaultLayout>
@@ -21,7 +35,7 @@ const Main = () => {
                         {
                             items.map((item) => {
                                 return (
-                                    <ItemCard item={item} navigate={navigate} key={item.id}></ItemCard>
+                                    <ItemCard item={item} navigate={navigate} key={item.itemId}></ItemCard>
                                 )
                             })
                         }

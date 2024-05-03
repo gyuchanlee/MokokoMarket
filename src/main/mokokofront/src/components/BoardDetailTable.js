@@ -4,10 +4,12 @@ import {deleteBoard, getBoardOne} from "../api/axios";
 import {useNavigate, useParams} from "react-router-dom";
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import {useSelector} from "react-redux";
 
 const BoardDetailTable = () => {
 
     // const isOwnBoard = board.memberName === sessionStorage.getItem('name') && board.memberPk === memberPk;
+
     const {id} = useParams();
     const navigate = useNavigate();
     const [board, setBoard] = useState({});

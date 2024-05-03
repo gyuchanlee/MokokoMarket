@@ -27,7 +27,7 @@ const NavLayout = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link onClick={ () => navigate('/') }>MyPage</Nav.Link>
+                        <Nav.Link onClick={ () => navigate('/myPage/1') }>MyPage</Nav.Link>
                         <Nav.Link onClick={ () => navigate('/cart') }>Cart</Nav.Link>
                         <Nav.Link onClick={ () => navigate('/boards') }>Community</Nav.Link>
                         <NavDropdown title="Shopping" id="basic-nav-dropdown">

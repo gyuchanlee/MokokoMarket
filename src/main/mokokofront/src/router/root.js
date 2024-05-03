@@ -15,6 +15,7 @@ const ItemDetails = lazy(() => import('../pages/items/ItemDetails'));
 const BoardList = lazy(() => import('../pages/boards/BoardList'));
 const Error400 = lazy(() => import('./../pages/Error400'));
 const MemberJoin = lazy(() => import('./../pages/members/MemberJoin'));
+const MyPage = lazy(() => import('./../pages/MyPage'));
 
 const root = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const root = createBrowserRouter([
     {
         path:"/members/join",
         element:<Suspense fallback={Loading}><MemberJoin/></Suspense>
+    },
+    {
+        path:"/myPage/:id",
+        element:<Suspense fallback={Loading}><MyPage/></Suspense>
     },
     {
         path:"*",
