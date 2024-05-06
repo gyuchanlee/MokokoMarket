@@ -11,8 +11,10 @@ const MyPage = () => {
         <DefaultLayout>
             <>
                 <div>
-                    <h4>여기는 마이 페이지 - 주문 내역, 주문 취소 기능, 옆에 간단하게 회원 정보 보여주기</h4>
-                    <p>{id}</p>
+                    <br/>
+                    <h2>마이 페이지</h2>
+                    <p>memberId = {id}</p>
+                    <br/>
                 </div>
                 <OrderInfo/>
                 <MemberInfo/>
