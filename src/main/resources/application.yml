@@ -50,6 +50,9 @@ spring:
   h2:
     console:
       enabled: true
+  web:
+    resources:
+      static-locations: classpath:/mokokofront/
 
 logging:
   level:
@@ -60,12 +63,3 @@ logging:
         security: DEBUG
     org.hibernate.orm.jdbc.bind: trace
     org.hibernate.SQL: debug
-
-charon:
-  enabled: true
-  mapping:
-    react-app:
-      path: /**
-      locations:
-        - classpath:/mokokofront/
-      index: index.html
