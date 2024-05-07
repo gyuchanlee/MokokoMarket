@@ -18,7 +18,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://db-mrlfp-kr.vpc-pub-cdb.ntruss.com:3306/test?serverTimezone=Asia/Seoul
-    username: test
+    username: mokoko-market
     password: "!@test1234"
 #    driver-class-name: org.h2.Driver
 #    url: jdbc:h2:tcp://localhost/~/test;MODE=MySQL
