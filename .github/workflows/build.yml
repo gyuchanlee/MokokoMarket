@@ -16,7 +16,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: your-username/your-app:latest
+          tags: dodobird99/your-app:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            docker pull your-username/your-app:latest
-            docker stop your-app || true
-            docker rm your-app || true
-            docker run -d --name your-app -p 8080:8080 your-username/your-app:latest
+            docker pull dodobird99/mokokoMarket:latest
+            docker stop mokokoMarket || true
+            docker rm mokokoMarket || true
+            docker run -d --name your-app -p 8080:8080 dodobird99/mokokoMarket:latest
