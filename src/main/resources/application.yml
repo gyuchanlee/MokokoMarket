@@ -10,12 +10,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  mvc:
-    pathmatch:
-      matching-strategy: path_pattern_parser
-  web:
-    resources:
-      static-locations: classpath:/static/,classpath:/main/mokokofront/
   jpa:
     hibernate:
       ddl-auto: create-drop
