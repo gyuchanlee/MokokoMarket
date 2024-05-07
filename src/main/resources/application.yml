@@ -15,7 +15,7 @@ spring:
       matching-strategy: path_pattern_parser
   web:
     resources:
-      static-locations: classpath:/static/,classpath:/mokokofront/
+      static-locations: classpath:/static/,classpath:/main/mokokofront/
   jpa:
     hibernate:
       ddl-auto: create-drop
