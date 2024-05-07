@@ -14,7 +14,6 @@ RUN ./gradlew bootJar
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get update && apt-get install -y nodejs npm
 
-
 # React 빌드
 COPY /src/main/mokokofront mokokofront
 WORKDIR /app/mokokofront
@@ -25,6 +24,8 @@ RUN npm run build
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
-COPY --from=build /app/mokokofront/build mokokofront
+COPY --from=build /app/mokokofront/build ./static
+
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -10,6 +10,9 @@ spring:
   config:
     activate:
       on-profile: dev
+  web:
+    resources:
+      static-locations: classpath:/static/
   jpa:
     hibernate:
       ddl-auto: create-drop
