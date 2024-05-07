@@ -11,7 +11,8 @@ spring:
     activate:
       on-profile: dev
   mvc:
-    static-path-pattern: /**
+    pathmatch:
+      matching-strategy: path_pattern_parser
   web:
     resources:
       static-locations: classpath:/mokokofront/
