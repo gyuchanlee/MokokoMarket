@@ -1,10 +1,8 @@
 import {Container, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import data from "../tempData/data.js"
 import ItemCard from "../components/ItemCard";
 import {useNavigate} from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
-import {useSelector} from "react-redux";
 import {getItems} from "../api/axios";
 
 const Main = () => {
@@ -17,7 +15,6 @@ const Main = () => {
         const fetchData = async () => {
             try {
                 const data = await getItems();
-                console.log(data);
                 setItems(data);
             } catch (error) {
                 console.error('Failed to fetch item data:', error);
