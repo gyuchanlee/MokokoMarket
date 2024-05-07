@@ -3,6 +3,7 @@ package com.projectif.mokokomarket.global;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,10 +21,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/", "classpath:/mokokofront/")
+                .setCachePeriod(0);
+    }
+
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:\\w+}")
-                .setViewName("forward:/");
-        registry.addViewController("/{spring:\\w+}/{path:(?!.*(\\.js|\\.css)$).*$}")
-                .setViewName("forward:/");
+        registry.addViewController("/{spring:^[^.]*$}").setViewName("forward:/");
     }
 }
