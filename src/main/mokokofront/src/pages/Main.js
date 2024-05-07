@@ -8,7 +8,7 @@ import {getItems} from "../api/axios";
 const Main = () => {
 
     let navigate = useNavigate();
-    // 메인에 보여줄 리스트 .
+    // 메인에 보여줄 리스트 ....
     const [items, setItems] = useState([]);
 
     useEffect(() => {
