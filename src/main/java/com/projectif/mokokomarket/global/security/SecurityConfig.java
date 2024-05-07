@@ -81,8 +81,8 @@ public class SecurityConfig {
                                 authorizeRequests
 //                                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                                         .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.gif", "/favicon.ico").permitAll()
-                                        .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards",
-                                                "/boards/{id}", "items/**").permitAll()
+                                        .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards","/static/**",
+                                                "/boards/{id}", "/items/**").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 가입
                                         .requestMatchers("/members/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                                         .requestMatchers(HttpMethod.POST, "/boards").hasAnyRole(Role.USER.name(), Role.ADMIN.name())

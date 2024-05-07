@@ -24,7 +24,7 @@ RUN npm run build
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
-COPY --from=build /app/mokokofront/build /app/static
+COPY --from=build /app/mokokofront/build /static
 
 EXPOSE 8080
 
