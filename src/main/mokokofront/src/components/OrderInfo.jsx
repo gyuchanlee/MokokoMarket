@@ -1,30 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Table} from 'react-bootstrap';
-import axios from "axios";
+import {cancelOrder, getOrderByMemberId} from "../api/axios";
 
-const OrderInfo = () => {
+const OrderInfo = ({ memberId }) => {
 
     const [orderData, setOrderData] = useState([]);
 
-    // useEffect(() => {
-    //     // 서버에서 사용자의 주문 정보를 가져옵니다.
-    //     axios.get(`/api/orders/${userId}`)
-    //         .then(response => {
-    //             setOrderData(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching order data:', error);
-    //         });
-    // }, [userId]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await getOrderByMemberId(memberId);
+                console.log(result);
+                setOrderData(result);
+            } catch (e) {
+                console.error('Failed to fetch item data:', e);
+            }
+        }
 
-    const handleCancelOrder = (orderId) => {
+        fetchData();
+    }, [memberId]);
+
+    const handleCancelOrder = async (orderId) => {
         // 주문 취소 요청을 서버로 보냅니다.
-        alert('주문 취소해주세요')
+        const result = await cancelOrder(orderId);
+        if (result === true) {
+            alert('주문을 취소했습니다.');
+            // 주문 취소 후, 최신 주문 데이터 가져오기
+            const updatedOrderData = await getOrderByMemberId(memberId);
+            // orderData 상태를 업데이트 -> OrderInfo 재렌더링
+            setOrderData(updatedOrderData);
+        } else {
+            alert('이미 취소된 주문이거나 주문 취소 오류입니다');
+        }
     };
 
     return (
         <>
-            <h4>주문 정보 및 취소</h4>
+            <h4>주문 정보 관리</h4>
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -49,13 +61,13 @@ const OrderInfo = () => {
                             <ul>
                                 {order.cartList.map((cart) => (
                                     <li key={cart.cartId}>
-                                        {cart.title} (count: {cart.count}) (price: {cart.price})
+                                        {cart.title} (주문개수: {cart.count}) (가격: {cart.price})
                                     </li>
                                 ))}
                             </ul>
                         </td>
                         <td>
-                            {order.status !== '취소됨' && (
+                            {order.status !== 'CANCELED' && (
                                 <Button variant="danger" onClick={() => handleCancelOrder(order.orderId)}>
                                     주문 취소
                                 </Button>

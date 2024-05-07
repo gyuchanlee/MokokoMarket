@@ -23,9 +23,14 @@ public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    // 회원 찾기
+    // 회원 찾기 - userId
     public Member findMemberByUserId(String userId) {
         return memberRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("user not found, detected user id: " + userId));
+    }
+
+    // 회원 찾기 - memberId
+    public Member findMemberByMemberId(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException("user not found, detected user pk: " + memberId));
     }
 
     // 회원 등록

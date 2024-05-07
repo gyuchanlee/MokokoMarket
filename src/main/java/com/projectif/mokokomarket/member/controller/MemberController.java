@@ -22,8 +22,18 @@ public class MemberController {
 
     // 회원 정보 조회
     @GetMapping("/{id}")
-    public MemberResponseDto getMember(@PathVariable("id") int id) {
-        return null;
+    public MemberResponseDto getMember(@PathVariable("id") Long id) {
+
+        Member findMember = memberService.findMemberByMemberId(id);
+
+        return MemberResponseDto.builder()
+                .memberId(findMember.getId())
+                .userId(findMember.getUserId())
+                .name(findMember.getName())
+                .email(findMember.getEmail())
+                .phone(findMember.getPhone())
+                .createdDateTime(findMember.getCreatedDateTime())
+                .build();
     }
 
     // 회원 리스트 조회

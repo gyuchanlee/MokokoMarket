@@ -1,6 +1,7 @@
 package com.projectif.mokokomarket.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectif.mokokomarket.member.domain.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -12,13 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -82,8 +81,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                                 authorizeRequests
                                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                        .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**").permitAll()
-                                        .anyRequest().permitAll()
+                                        .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards",
+                                                "/boards/{id}", "items/**").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 가입
+                                        .requestMatchers("/members/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                        .requestMatchers(HttpMethod.POST, "/boards").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                        .requestMatchers(HttpMethod.PUT, "/boards/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                        .requestMatchers(HttpMethod.DELETE, "/boards/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                        .requestMatchers("/orders/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // 주문 관련 api
+                                        .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement

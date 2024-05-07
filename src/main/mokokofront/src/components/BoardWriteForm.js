@@ -4,6 +4,7 @@ import React, {useRef} from "react";
 import {writeBoard} from "../api/axios";
 import './../css/BoardWriteForm.css';
 import TuiEditor from "./TuiEditor";
+import {useSelector} from "react-redux";
 
 const BoardWriteForm = () => {
 
@@ -11,21 +12,21 @@ const BoardWriteForm = () => {
     const boardTitle = useRef('');
     const boardContent = useRef('');
     const navigate = useNavigate();
+    const memberId = useSelector(state => state.SessionInfo).memberId;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission, e.g., send data to the server
-        console.log('Board Data:', boardCategory.current, boardTitle.current, boardContent.current );
+
         let dto = {
             title : boardTitle.current,
             content: boardContent.current,
             category: boardCategory.current,
             level: 0,
-            // 테스트용 회원
-            memberId: 1,
+            memberId: memberId,
         }
+
         const complete = await writeBoard(dto);
-        console.log(complete);
+
         if (complete) {
             alert('글 작성 성공');
             navigate(`/boards`);

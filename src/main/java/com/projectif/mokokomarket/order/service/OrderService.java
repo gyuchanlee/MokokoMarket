@@ -10,6 +10,7 @@ import com.projectif.mokokomarket.order.domain.Order;
 import com.projectif.mokokomarket.order.domain.OrderStatus;
 import com.projectif.mokokomarket.order.dto.request.CartCreateDto;
 import com.projectif.mokokomarket.order.dto.request.OrderCreateDto;
+import com.projectif.mokokomarket.order.dto.response.CartListResponseDto;
 import com.projectif.mokokomarket.order.dto.response.OrderResponseDto;
 import com.projectif.mokokomarket.order.repository.CartRepository;
 import com.projectif.mokokomarket.order.repository.OrderRepository;
@@ -33,11 +34,44 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
-    // 주문 조회
+    // 주문 조회 *** 나중에 fetch join
     public List<OrderResponseDto> findAllOrders(Long memberId) {
         List<Order> findOrders = orderRepository.findAllByMemberId(memberId);
 
-        return null;
+        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
+        for (Order order : findOrders) {
+
+            List<Cart> cartList = order.getCartList();
+            List<CartListResponseDto> cartListResponseDtoList = new ArrayList<>();
+
+            for (Cart cart : cartList) {
+                CartListResponseDto cartResponseDto = CartListResponseDto.builder()
+                        .cartId(cart.getId())
+                        .count(cart.getCount())
+                        .itemId(cart.getItem().getId())
+                        .title(cart.getItem().getTitle())
+                        .content(cart.getItem().getContent())
+                        .imageSource(cart.getItem().getImageSource())
+                        .price(cart.getItem().getPrice())
+                        .brand(cart.getItem().getBrand())
+                        .build();
+                cartListResponseDtoList.add(cartResponseDto);
+            }
+
+            OrderResponseDto orderResponseDto = OrderResponseDto.builder()
+                    .orderId(order.getId())
+                    .paymentMethod(order.getPaymentMethod())
+                    .totalPrice(order.getTotalPrice())
+                    .requests(order.getRequests())
+                    .status(order.getStatus())
+                    .memberId(order.getMember().getId())
+                    .userId(order.getMember().getUserId())
+                    .cartList(cartListResponseDtoList)
+                    .build();
+            orderResponseDtos.add(orderResponseDto);
+        }
+
+        return orderResponseDtos;
     }
 
     // 장바구니 상품 낱개 등록 메서드
@@ -119,10 +153,17 @@ public class OrderService {
     @Transactional
     public boolean cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // 이미 취소되었는 지 체크
+        boolean check = true;
+        if (order.getStatus() == OrderStatus.CANCELED) {
+            check = false;
+        }
+
         order.cancelOrder();
 
         // 주문 CANCELED 상태면 주문 취소이므로 true 반환
-        return order.getStatus().name().equals("CANCELED");
+        return order.getStatus().name().equals("CANCELED") && check;
     }
 
 }

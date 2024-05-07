@@ -1,11 +1,13 @@
 import React, {lazy, Suspense} from 'react';
 import Login from "../pages/login/Login";
 import ItemListBestSeller from "../pages/items/ItemListBestSeller";
+import {useSelector} from "react-redux";
 
 
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = () => <>Loading...</>;
+const CheckLoginRoute = lazy(() => import('./CheckLoginRoute'));
 const Main = lazy(() => import('./../pages/Main'));
 const BoardDetails = lazy(() => import('../pages/boards/BoardDetails'));
 const BoardWrite = lazy(() => import('../pages/boards/BoardWrite'));
@@ -37,11 +39,11 @@ const root = createBrowserRouter([
     },
     {
         path:"/boards/write",
-        element:<Suspense fallback={Loading}><BoardWrite/></Suspense>
+        element:<Suspense fallback={Loading}><CheckLoginRoute Component={<BoardWrite/>}></CheckLoginRoute></Suspense>
     },
     {
         path:"/cart",
-        element:<Suspense fallback={Loading}><Cart/></Suspense>
+        element:<Suspense fallback={Loading}><CheckLoginRoute Component={<Cart/>}></CheckLoginRoute></Suspense>
     },
     {
         path:"/items",
@@ -61,7 +63,7 @@ const root = createBrowserRouter([
     },
     {
         path:"/myPage/:id",
-        element:<Suspense fallback={Loading}><MyPage/></Suspense>
+        element:<Suspense fallback={Loading}><CheckLoginRoute Component={<MyPage/>}></CheckLoginRoute></Suspense>
     },
     {
         path:"*",

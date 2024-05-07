@@ -120,6 +120,20 @@ export const logout = () => {
         });
 }
 
+// 회원 한 건 조회
+export const getMember = (memberId) => {
+    return axios.get(`${API_SERVER_HOST}/members/${memberId}`,{
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
 // 회원 가입 POST -> 기본 사용자 가입 페이지용
 export const joinMember = (dto) => {
     return axios.post(`${API_SERVER_HOST}/members`, {
@@ -178,6 +192,20 @@ export const deleteMember = (id) => {
 // 주문 리스트 조회
 export const getOrder = () => {
     return axios.get(`${API_SERVER_HOST}/orders`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
+// 한 회원의 주문 리스트 조회
+export const getOrderByMemberId = (memberId) => {
+    return axios.get(`${API_SERVER_HOST}/orders/${memberId}`, {
+        headers : jsonHeaders
+    })
         .then((response) => {
             return response.data;
         })
