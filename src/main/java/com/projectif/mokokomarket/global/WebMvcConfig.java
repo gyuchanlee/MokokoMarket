@@ -23,11 +23,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
+                .addResourceLocations("classpath:/static/build/"); // React 빌드 결과물 경로로 변경
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:^[^.]*$}").setViewName("forward:/index.html");
+        registry.addViewController("/").setViewName("forward:/index.html"); // React SPA 라우팅 설정
     }
 }
