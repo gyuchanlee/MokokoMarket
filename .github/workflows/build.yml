@@ -34,4 +34,4 @@ jobs:
             docker pull dodobird99/mokoko-market:latest
             docker stop mokoko-market || true
             docker rm mokoko-market || true
-            docker run -d --name mokoko-market -p 8080:8080 -v /home/ubuntu/mokoko-market/application.yml:/app/application.yml -v /home/ubuntu/mokoko-market/uploads:/app/uploads dodobird99/mokoko-market:latest
+            docker run -d --name mokoko-market -p 8080:8080 -p 3000:3000 -v /home/ubuntu/mokoko-market/application.yml:/app/application.yml -v /home/ubuntu/mokoko-market/uploads:/app/uploads dodobird99/mokoko-market:latest
