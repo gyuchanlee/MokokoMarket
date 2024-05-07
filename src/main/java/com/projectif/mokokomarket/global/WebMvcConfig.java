@@ -1,7 +1,10 @@
 package com.projectif.mokokomarket.global;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -23,17 +26,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/"); // React 빌드 결과물 경로로 변경
+                .addResourceLocations("classpath:/static/")
+                .setCacheControl(CacheControl.noCache().cachePublic());
     }
 
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:\\w+}")
-                .setViewName("forward:/");
-        registry.addViewController("/**/{spring:\\w+}")
-                .setViewName("forward:/");
-        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}")
-                .setViewName("forward:/");
+        registry.addViewController("/")
+                .setViewName("forward:/index.html");
+
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
+        registry.addViewController("/**")
+                .setViewName("forward:/index.html");
+
+        WebMvcConfigurer.super.addViewControllers(registry);
     }
 }
