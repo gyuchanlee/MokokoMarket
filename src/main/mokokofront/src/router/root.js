@@ -1,7 +1,6 @@
 import React, {lazy, Suspense} from 'react';
 import Login from "../pages/login/Login";
 import ItemListBestSeller from "../pages/items/ItemListBestSeller";
-import {useSelector} from "react-redux";
 
 
 const { createBrowserRouter } = require('react-router-dom');
