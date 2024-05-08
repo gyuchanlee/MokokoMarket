@@ -80,7 +80,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                                 authorizeRequests
 //                                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.gif", "/favicon.ico").permitAll()
+//                                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.gif", "/favicon.ico").permitAll()
                                         .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards","/static/**",
                                                 "/boards/{id}", "/items/**", "/error").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 가입

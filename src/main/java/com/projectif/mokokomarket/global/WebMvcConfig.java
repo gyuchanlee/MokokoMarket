@@ -13,30 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOriginPatterns("http://localhost:3000")
-//                .allowCredentials(true)
-//                .allowedHeaders("*")
-//                .allowedMethods(HttpMethod.OPTIONS.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name())
-//                .maxAge(3600);
-//    }
-
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("http://localhost:3000")
+                .allowCredentials(true)
+                .allowedHeaders("*")
+                .allowedMethods(HttpMethod.OPTIONS.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name())
+                .maxAge(3600);
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{x:[\\w\\-]+}")
-                .setViewName("forward:/");
-        registry.addViewController("/**/{x:[\\w\\-]+}")
-                .setViewName("forward:/");
-        registry.addViewController("/**")
-                .setViewName("forward:/");
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-    }
 }

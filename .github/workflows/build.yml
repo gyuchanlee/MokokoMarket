@@ -17,12 +17,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
+      - name: Build Backend Image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./backend
           push: true
-          tags: dodobird99/mokoko-market:latest
+          tags: dodobird99/mokoko-market-backend:latest
+
+      - name: Build Frontend Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          push: true
+          tags: dodobird99/mokoko-market-frontend:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
@@ -31,7 +38,13 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            docker pull dodobird99/mokoko-market:latest
-            docker stop mokoko-market || true
-            docker rm mokoko-market || true
-            docker run -d --name mokoko-market -p 8080:8080 dodobird99/mokoko-market:latest
+            docker pull dodobird99/mokoko-market-backend:latest
+            docker pull dodobird99/mokoko-market-frontend:latest
+            
+            docker stop mokoko-market-backend || true
+            docker rm mokoko-market-backend || true
+            
+            docker stop mokoko-market-frontend || true
+            docker rm mokoko-market-frontend || true
+            
+            docker-compose up -d
