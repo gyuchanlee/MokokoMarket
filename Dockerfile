@@ -6,7 +6,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x gradlew
-RUN ./gradlew bootjar
+RUN ./gradlew clean bootJar --no-daemon
 
 FROM openjdk:17
 COPY --from=builder /builder/build/libs/*.jar app.jar
