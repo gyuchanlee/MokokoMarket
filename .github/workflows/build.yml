@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          timeout: 300s
+          timeout: 100s
           debug: true
           script: |
             docker pull dodobird99/mokoko-market-backend:latest
