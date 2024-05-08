@@ -9,7 +9,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
-RUN ./gradlew bootJar --no-daemon
+RUN ./gradlew bootJar
 
 # 런타임 스테이지
 FROM openjdk:17-jdk-alpine
