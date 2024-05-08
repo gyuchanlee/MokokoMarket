@@ -1,20 +1,28 @@
+# 빌드 스테이지
 FROM openjdk:17 AS builder
-WORKDIR /backend
-# Gradle 설치
-ENV GRADLE_VERSION=7.4.2
-RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
-    && unzip gradle-${GRADLE_VERSION}-bin.zip \
-    && rm gradle-${GRADLE_VERSION}-bin.zip
 
-ENV PATH=/builder/gradle-${GRADLE_VERSION}/bin:$PATH
+WORKDIR /app
 
+# Gradle 래퍼 파일 복사
+COPY gradlew .
+COPY gradle gradle
+
+# 프로젝트 파일 복사
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 
-RUN gradle clean bootJar
+# Gradle을 사용하여 프로젝트 빌드
+RUN chmod +x gradlew
+RUN ./gradlew bootJar
 
+# 런타임 스테이지
 FROM openjdk:17
-COPY --from=builder /builder/build/libs/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+WORKDIR /app
+
+# 빌드 결과물 복사
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "app.jar"]
