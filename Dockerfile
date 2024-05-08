@@ -1,4 +1,3 @@
-# 빌드 스테이지
 FROM openjdk:17 AS builder
 
 WORKDIR /app
@@ -9,7 +8,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
-RUN ./gradlew bootJar -x test
+RUN ./gradlew bootJar --no-daemon
 
 # 런타임 스테이지
 FROM openjdk:17
