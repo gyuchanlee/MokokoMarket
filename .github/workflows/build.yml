@@ -49,4 +49,5 @@ jobs:
             docker stop mokoko-market-frontend || true
             docker rm mokoko-market-frontend || true
             
-            docker-compose up -d
+            docker run -d --name mokoko-market-backend -p 8080:8080 dodobird99/mokoko-market-backend:latest
+            docker run -d --name mokoko-market-frontend -p 3000:80 dodobird99/mokoko-market-frontend:latest
