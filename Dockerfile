@@ -1,4 +1,4 @@
-FROM openjdk:17 AS builder
+FROM openjdk:17-jdk-alpine AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew bootJar --no-daemon
 
 # 런타임 스테이지
-FROM openjdk:17
+FROM openjdk:17-jdk-alpine
 WORKDIR /app
 # 빌드 결과물 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
