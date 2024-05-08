@@ -51,4 +51,4 @@ jobs:
             docker rm mokoko-market-frontend || true
             
             docker run -d --name mokoko-market-backend -p 8080:8080 dodobird99/mokoko-market-backend:latest
-            docker run -d --name mokoko-market-frontend -p 3000:80 dodobird99/mokoko-market-frontend:latest
+            docker run -d --name mokoko-market-frontend -p 80:3000 dodobird99/mokoko-market-frontend:latest

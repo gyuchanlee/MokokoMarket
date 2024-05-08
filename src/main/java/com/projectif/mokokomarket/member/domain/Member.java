@@ -28,6 +28,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String userId;
     private String name;
     private String email;
+    private String profileImage;
     private String phone;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -75,14 +76,27 @@ public class Member extends BaseEntity implements UserDetails {
 
     // 기본 회원 등록
     @Builder
-    public Member(String userId, String name, String email, String phone, String password, Role role, LoginType loginType) {
+    public Member(String userId, String name, String email, String profileImage, String phone, String password, Role role, LoginType loginType) {
         this.userId = userId;
         this.name = name;
         this.email = email;
+        if (profileImage == null) {
+            this.profileImage = "https://kr.object.ncloudstorage.com/dodobird-bk1/thanksBean.gif"; // 기본 회원가입 -> 기본 프로필
+        } else {
+            this.profileImage = profileImage;
+        }
         this.phone = phone;
         this.password = password;
         this.role = role;
         this.loginType = loginType;
+    }
+
+    // oAuth2 회원 수정 메서드
+    public void oauth2ChangeFields(String name, String profileImage, String phone, Role role) {
+        this.name = name;
+        this.profileImage = profileImage;
+        this.phone = phone;
+        this.role = role;
     }
 
     // 회원 수정

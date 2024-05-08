@@ -1,6 +1,7 @@
 package com.projectif.mokokomarket.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectif.mokokomarket.global.security.oauth.OAuth2SuccessHandler;
 import com.projectif.mokokomarket.member.domain.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -56,6 +59,13 @@ public class SecurityConfig {
                 writer.flush();
             };
 
+    private final OAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    /**
+     * OAuth2UserService - OAuth2 인증 처리 서비스
+     * OAuth2SuccessHandler - OAuth2 인증이 성공했을 시 처리하는 핸들러 설정
+     */
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -68,11 +78,11 @@ public class SecurityConfig {
                                 .failureForwardUrl("/login/failure")
                                 .permitAll()
                 )
-//                .oauth2Login(oauth2 -> {
-//                    oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService));
-//                    oauth2.successHandler(oAuth2SuccessHandler);
-//                    oauth2.failureUrl("/login/oauth2/fail");
-//                })
+                .oauth2Login(oauth2 -> {
+                    oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService));
+                    oauth2.successHandler(oAuth2SuccessHandler);
+                    oauth2.failureUrl("/login/failure");
+                })
                 .logout(logoutConfigurer -> {
                     logoutConfigurer.logoutSuccessHandler(logoutSuccessHandler());
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
@@ -80,8 +90,6 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests((authorizeRequests) ->
                                 authorizeRequests
-//                                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-//                                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.gif", "/favicon.ico").permitAll()
                                         .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards","/static/**",
                                                 "/boards/{id}", "/items/**", "/error").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 가입
@@ -113,18 +121,8 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-//        return new PasswordEncoder() {
-//            @Override
-//            public String encode(CharSequence rawPassword) {
-//                return (String) rawPassword;
-//            }
-//
-//            @Override
-//            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-//                return String.valueOf(rawPassword).equals(encodedPassword);
-//            }
-//        };
     }
+
 
     @Bean
     LogoutSuccessHandler logoutSuccessHandler() {

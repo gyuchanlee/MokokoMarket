@@ -1,10 +1,11 @@
 import {Button, Card, Form, Container} from "react-bootstrap";
 import React, {useState} from "react";
 import './../css/login.css'
-import {login} from "../api/axios";
+import {login, naverLogin} from "../api/axios";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addSessionInfo} from "../store/SessionInfoSlice";
+import axios from "axios";
 
 const LoginForm = message => {
 
@@ -28,6 +29,21 @@ const LoginForm = message => {
             navigate('/');
         }
     };
+
+    const naverLoginSubmit = async () => {
+        // 네이버 로그인 axios
+        const result = await naverLogin();
+        console.log('naver login result', result);
+        if (result.userId === undefined) {
+            alert('로그인 실패');
+            window.location.reload();
+        } else {
+            dispatch(addSessionInfo(result));
+            alert('로그인 성공');
+            navigate('/');
+        }
+
+    }
 
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -56,6 +72,10 @@ const LoginForm = message => {
 
                         <Button variant="primary" type="submit" className="submit-btn">
                             Login
+                        </Button>
+                        <Button variant="primary" type="button" className="submit-btn"
+                                onClick={() => naverLoginSubmit() }>
+                            네이버 로그인
                         </Button>
                         <Button variant="secondary" className="signup-btn" onClick={() => navigate('/members/join')}>
                             Sign Up

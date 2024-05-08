@@ -1,13 +1,8 @@
 package com.projectif.mokokomarket.global;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration

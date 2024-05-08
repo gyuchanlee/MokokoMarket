@@ -2,8 +2,8 @@ import axios from "axios";
 
 // async - await : 비동기처럼 쓰고 싶을 때 (ES6임) -> 페이지 로딩될때 순서 보장이 필요할때 쓰면 좋을듯 (대부분 이거 쓰면 될듯함)
 // 이거 끌어다 쓰는 쪽 BoardList.js 나 BoardDetails.js 이런 쪽에서 적용해서 쓰면 좋을듯
-// const API_SERVER_HOST = `http://localhost:8080`;
-const API_SERVER_HOST = `http://223.130.134.185:8080`;
+const API_SERVER_HOST = `http://localhost:8080`;
+// const API_SERVER_HOST = `http://223.130.134.185:8080`;
 const defaultHeaders = {
     "Content-Type": "application/x-www-form-urlencoded",
     "Access-Control-Allow-Origin": `http://localhost:3000`,
@@ -106,6 +106,21 @@ export const login = (dto) => {
             return error.response.data;
         });
 }
+
+// naver 연동 login 로직 GET
+export const naverLogin = (dto) => {
+    return axios.get(`${API_SERVER_HOST}/oauth2/authorization/naver`,{
+        headers : jsonHeaders
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            return error.response.data;
+        });
+}
+
 
 // logout 로직 post
 export const logout = () => {
