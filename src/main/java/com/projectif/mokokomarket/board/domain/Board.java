@@ -21,11 +21,16 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Brand category;
     private Integer level;
+    private Long ref;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
 
+    // ref 설정 메서드
+    public void changeRef(Long ref) {
+        this.ref = ref;
+    }
 
     // 글 등록
     @Builder
@@ -34,6 +39,15 @@ public class Board extends BaseEntity {
         this.content = content;
         this.category = category;
         this.level = 0;
+        this.member = member;
+    }
+
+    public Board(String title, String content, Brand category, Long ref, Member member) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.level = 0;
+        this.ref = ref;
         this.member = member;
     }
 

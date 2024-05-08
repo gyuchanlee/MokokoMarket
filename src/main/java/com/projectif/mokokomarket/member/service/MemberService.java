@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 회원 찾기 - userId
     public Member findMemberByUserId(String userId) {
@@ -46,7 +48,7 @@ public class MemberService implements UserDetailsService {
                 Member.builder()
                         .userId(dto.getUserId())
                         .name(dto.getName())
-                        .password(dto.getPassword())
+                        .password(passwordEncoder.encode(dto.getPassword()))
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
                         .role(Role.valueOf(dto.getRole()))
@@ -60,6 +62,7 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public boolean update(MemberUpdateDto dto, Long id) {
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("member not found"));
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         findMember.updateMember(dto);
         return true;
     }

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableJpaAuditing
@@ -26,6 +28,7 @@ public class MokokoMarketApplication {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final ItemRepository itemRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(MokokoMarketApplication.class, args);
@@ -39,7 +42,7 @@ public class MokokoMarketApplication {
                     Member.builder()
                             .userId("test" + i)
                             .name("test" + i)
-                            .password("1234")
+                            .password(passwordEncoder.encode("123"))
                             .email("test" + i + "@gmail.com")
                             .phone("010-1234-123" + i)
                             .role(Role.USER)
@@ -51,13 +54,8 @@ public class MokokoMarketApplication {
         Member member = memberRepository.findByUserId("test1").orElseThrow(() -> new RuntimeException("no member found exception"));
         // 테스트용 커뮤니티 글 세팅
         for (int i = 1; i <= 3; i++) {
-            boardRepository.save(
-                    Board.builder()
-                            .title("안녕하세요 " + i + "트")
-                            .content("테스트입니다 " + i)
-                            .category(Brand.Mokoko)
-                            .member(member)
-                            .build()
+            Board saved = boardRepository.save(
+                    new Board(("안녕하세요 " + i + "트"), ("테스트입니다 " + i), Brand.Mokoko, (long) i, member)
             );
         }
 

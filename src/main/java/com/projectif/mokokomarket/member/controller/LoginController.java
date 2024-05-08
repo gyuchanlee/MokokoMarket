@@ -3,19 +3,14 @@ package com.projectif.mokokomarket.member.controller;
 import com.projectif.mokokomarket.member.domain.Member;
 import com.projectif.mokokomarket.member.dto.response.SessionInfoDto;
 import com.projectif.mokokomarket.member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -34,12 +29,6 @@ public class LoginController {
         // DB 회원 찾기
         Member member = memberService.findMemberByUserId(userId);
         // 세션에 필수 정보 넣기
-        session.setAttribute("id", member.getUserId());
-        session.setAttribute("pk", member.getId());
-        session.setAttribute("name", member.getName());
-        session.setAttribute("email", member.getEmail());
-        session.setAttribute("role", member.getRole().name());
-        session.setAttribute("loginType", member.getLoginType().name());
 
         return SessionInfoDto.builder()
                 .memberId(member.getId())

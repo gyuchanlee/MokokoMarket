@@ -7,6 +7,11 @@ import com.projectif.mokokomarket.board.dto.request.BoardWriteRequestDto;
 import com.projectif.mokokomarket.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +34,7 @@ public class BoardController {
                     .content(board.getContent())
                     .category(board.getCategory())
                     .level(board.getLevel())
+                     .ref(board.getRef())
                     .memberId(board.getMember().getId())
                      .userId(board.getMember().getUserId())
                     .createdDateTime(board.getCreatedDateTime())
@@ -37,7 +43,16 @@ public class BoardController {
         ).toList();
     }
 
-    @GetMapping("/{id}")
+    // 예) /boards?page=0&size=3&sort=id,desc&sort=boardTitle,desc
+    @GetMapping("/sorted")
+    public Page<BoardResponseDto> getBoardList(@PageableDefault(size = 5, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<BoardResponseDto> boardPage = boardService.getBoardSortedList(pageable);
+
+        return boardPage;
+    }
+
+        @GetMapping("/{id}")
     public BoardResponseDto getBoard(@PathVariable("id") Long id) {
         Board board = boardService.getBoard(id);
 
@@ -47,6 +62,7 @@ public class BoardController {
                 .content(board.getContent())
                 .category(board.getCategory())
                 .level(board.getLevel())
+                .ref(board.getRef())
                 .memberId(board.getMember().getId())
                 .userId(board.getMember().getUserId())
                 .createdDateTime(board.getCreatedDateTime())
