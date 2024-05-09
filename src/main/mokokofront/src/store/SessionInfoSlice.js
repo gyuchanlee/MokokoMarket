@@ -11,6 +11,8 @@ const SessionInfo = createSlice({
         phone: "",
         role: "",
         loginType: "",
+        accessToken: "",
+        refreshToken: "",
     },
     reducers : {
         addSessionInfo: (state, action) => {
@@ -21,6 +23,8 @@ const SessionInfo = createSlice({
             state.phone = action.payload.phone;
             state.role = action.payload.role;
             state.loginType = action.payload.loginType;
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
         },
         deleteSessionInfo: (state) => ({
             memberId: "",
@@ -30,6 +34,8 @@ const SessionInfo = createSlice({
             phone: "",
             role: "",
             loginType: "",
+            accessToken: "",
+            refreshToken: "",
         }),
     }
 })

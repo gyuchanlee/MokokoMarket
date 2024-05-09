@@ -1,5 +1,6 @@
 package com.projectif.mokokomarket.member.controller;
 
+import com.projectif.mokokomarket.global.security.jwt.JWTUtil;
 import com.projectif.mokokomarket.member.domain.LoginType;
 import com.projectif.mokokomarket.member.domain.Member;
 import com.projectif.mokokomarket.member.dto.response.SessionInfoDto;
@@ -36,6 +37,17 @@ public class LoginController {
         return getSessionInfoDto(LoginType.NAVER);
     }
 
+    @GetMapping("/login/oauth2/failure")
+    public ResponseEntity<?> oAuthFailure() {
+        // 인증된 사용자 정보
+        log.info("로그인 실패");
+
+        session.invalidate();
+
+        // 나중에 401 Error로 이쁘게 보내보기
+        return ResponseEntity.ok("로그인 실패");
+    }
+
     @PostMapping("/login/failure")
     public ResponseEntity<?> failure(HttpSession session) {
 
@@ -60,9 +72,8 @@ public class LoginController {
 
         // DB 회원 찾기
         Member member = memberService.findMemberByUserId(userId);
-        // 세션에 필수 정보 넣기
 
-        return SessionInfoDto.builder()
+        SessionInfoDto sessionInfo = SessionInfoDto.builder()
                 .memberId(member.getId())
                 .userId(member.getUserId())
                 .name(member.getName())
@@ -72,5 +83,13 @@ public class LoginController {
                 .role(member.getRole())
                 .loginType(member.getLoginType())
                 .build();
+
+        // 세션에 필수 정보 넣기
+        String accessToken = JWTUtil.generateToken(sessionInfo, 10); // 10분
+        String refreshToken = JWTUtil.generateToken(sessionInfo, 60*24); // 24시간
+        sessionInfo.setAccessToken(accessToken);
+        sessionInfo.setRefreshToken(refreshToken);
+
+        return sessionInfo;
     }
 }

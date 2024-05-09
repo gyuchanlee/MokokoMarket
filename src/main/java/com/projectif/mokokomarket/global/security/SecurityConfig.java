@@ -1,8 +1,9 @@
 package com.projectif.mokokomarket.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectif.mokokomarket.global.security.oauth.OAuth2SuccessHandler;
+import com.projectif.mokokomarket.global.security.jwt.JWTCheckFilter;
 import com.projectif.mokokomarket.member.domain.Role;
+import com.projectif.mokokomarket.member.repository.MemberRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,18 +14,22 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -59,30 +64,35 @@ public class SecurityConfig {
                 writer.flush();
             };
 
-    private final OAuth2UserService oAuth2UserService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final MemberRepository memberRepository;
     /**
      * OAuth2UserService - OAuth2 인증 처리 서비스
      * OAuth2SuccessHandler - OAuth2 인증이 성공했을 시 처리하는 핸들러 설정
+     * TokenService - jwt 등록 서비스
      */
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                // api 서버에서는 보통 쓰지 않음
                 .csrf(AbstractHttpConfigurer::disable)
+                // 끄고 필터로 대체
                 .cors(AbstractHttpConfigurer::disable)
                 .addFilter(corsFilter())
+                // 시큐리티가 username/password 기반 인증 필터를 수행하기 전에 JWT 인가 필터 수행
+                .addFilterBefore(new JWTCheckFilter(),
+                        UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form
                                 .successForwardUrl("/login/success")
                                 .failureForwardUrl("/login/failure")
                                 .permitAll()
                 )
-                .oauth2Login(oauth2 -> {
-                    oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService));
-                    oauth2.successHandler(oAuth2SuccessHandler);
-                    oauth2.failureUrl("/login/failure");
-                })
+//                .oauth2Login(oauth2 -> {
+//                    oauth2.userInfoEndpoint(userInfo -> userInfo.userService());
+//                    oauth2.successHandler();
+//                    oauth2.failureUrl("/login/oauth2/failure");
+//                })
                 .logout(logoutConfigurer -> {
                     logoutConfigurer.logoutSuccessHandler(logoutSuccessHandler());
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
@@ -92,6 +102,7 @@ public class SecurityConfig {
                                 authorizeRequests
                                         .requestMatchers("/oauth2/authorization/**", "/login/**", "logout/**", "/boards","/static/**",
                                                 "/boards/{id}", "/items/**", "/error").permitAll()
+                                        .requestMatchers("/token/**").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 가입
                                         .requestMatchers("/members/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                                         .requestMatchers(HttpMethod.POST, "/boards").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
@@ -102,12 +113,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement
-                                .sessionConcurrency((sessionConcurrency) ->
-                                        sessionConcurrency
-                                                .maximumSessions(1)
-                                                .maxSessionsPreventsLogin(true)
-                                                .expiredUrl("/login?expired")
-                                )
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 추가하지 않도록 (무상태)
                 )
                 .exceptionHandling((exceptionConfig) ->
                         exceptionConfig
