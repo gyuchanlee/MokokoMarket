@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createSlice} from '@reduxjs/toolkit';
+import {combineReducers, configureStore, createSlice, createStore} from '@reduxjs/toolkit';
 import CartInfo from "./store/CartInfoSlice";
 import SessionInfo from "./store/SessionInfoSlice";
 import {persistReducer} from "redux-persist";

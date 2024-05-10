@@ -12,7 +12,7 @@ const BoardWriteForm = () => {
     const boardTitle = useRef('');
     const boardContent = useRef('');
     const navigate = useNavigate();
-    const memberId = useSelector(state => state.SessionInfo).memberId;
+    const sessionInfo = useSelector(state => state.SessionInfo);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,12 +22,14 @@ const BoardWriteForm = () => {
             content: boardContent.current,
             category: boardCategory.current,
             level: 0,
-            memberId: memberId,
+            memberId: sessionInfo.memberId,
         }
 
-        const complete = await writeBoard(dto);
+        const complete = await writeBoard(dto, sessionInfo.accessToken);
 
-        if (complete) {
+        console.log('글 작성 성공 여부', complete)
+
+        if (complete === true) {
             alert('글 작성 성공');
             navigate(`/boards`);
         } else {

@@ -13,12 +13,17 @@ const BoardDetailTable = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const [board, setBoard] = useState({});
+    const accessToken = useSelector((state) => state.SessionInfo).accessToken;
 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getBoardOne(id); // getBoardList 함수를 호출하여 데이터를 가져옴
+                const data = await getBoardOne(id, accessToken); // getBoardList 함수를 호출하여 데이터를 가져옴
+                console.log("글 데이터", data);
+                console.log(data.message)
+                console.log(data.message === 'expiredJwtException')
+                // axios error -> data.message 로 옴
                 setBoard(data); // 가져온 데이터를 상태에 설정
             } catch (error) {
                 console.error('Error fetching board one:', error);

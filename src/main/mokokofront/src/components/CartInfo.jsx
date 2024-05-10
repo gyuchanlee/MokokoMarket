@@ -50,7 +50,7 @@ const CartInfo = () => {
             cartList: cartList,
         };
 
-        const result = await createOrder(dto);
+        const result = await createOrder(dto, sessionInfo.accessToken);
 
         if (result) {
             alert(`주문해주셔서 감사합니다`);

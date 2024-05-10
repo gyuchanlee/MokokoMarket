@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {cancelOrder, getOrderByMemberId} from "../api/axios";
+import {useSelector} from "react-redux";
 
 const OrderInfo = ({ memberId }) => {
 
     const [orderData, setOrderData] = useState([]);
+    const accessToken = useSelector((state) => state.SessionInfo).accessToken;
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getOrderByMemberId(memberId);
+                const result = await getOrderByMemberId(memberId, accessToken);
                 console.log(result);
                 setOrderData(result);
             } catch (e) {
@@ -22,11 +25,11 @@ const OrderInfo = ({ memberId }) => {
 
     const handleCancelOrder = async (orderId) => {
         // 주문 취소 요청을 서버로 보냅니다.
-        const result = await cancelOrder(orderId);
+        const result = await cancelOrder(orderId, accessToken);
         if (result === true) {
             alert('주문을 취소했습니다.');
             // 주문 취소 후, 최신 주문 데이터 가져오기
-            const updatedOrderData = await getOrderByMemberId(memberId);
+            const updatedOrderData = await getOrderByMemberId(memberId, accessToken);
             // orderData 상태를 업데이트 -> OrderInfo 재렌더링
             setOrderData(updatedOrderData);
         } else {

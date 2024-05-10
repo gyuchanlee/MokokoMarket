@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -34,6 +35,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -81,7 +83,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .addFilter(corsFilter())
                 // 시큐리티가 username/password 기반 인증 필터를 수행하기 전에 JWT 인가 필터 수행
-                .addFilterBefore(new JWTCheckFilter(),
+                .addFilterBefore(new JWTCheckFilter(memberRepository),
                         UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form
                                 .successForwardUrl("/login/success")

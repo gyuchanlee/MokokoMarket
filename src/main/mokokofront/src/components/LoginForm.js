@@ -25,7 +25,7 @@ const LoginForm = message => {
         } else {
             dispatch(addSessionInfo(result));
             alert('로그인 성공');
-            navigate('/');
+            navigate({pathname:'/'}, {replace: true});
         }
     };
 

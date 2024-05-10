@@ -39,15 +39,33 @@ public class JWTUtil {
         claims.put("role", sessionInfoDto.getRole());
         claims.put("loginType", sessionInfoDto.getLoginType());
 
-        String jwtStr = Jwts.builder()
+        return Jwts.builder()
                 .setHeader(Map.of("typ", "JWT"))
                 .setClaims(claims)
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
                 .signWith(key)
                 .compact();
+    }
 
-        return jwtStr;
+    public static String generateToken(Map<String, Object> claims, int min) {
+
+        SecretKey key = null;
+
+        try {
+            key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes(StandardCharsets.UTF_8));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return Jwts.builder()
+                .setHeader(Map.of("typ", "JWT"))
+                .setClaims(claims)
+                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
+                .signWith(key)
+                .compact();
     }
 
     public static Map<String, Object> validateToken(String token) {

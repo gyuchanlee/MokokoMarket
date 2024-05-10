@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString(exclude = {"boardList"})
+@ToString(exclude = {"boardList", "orderList", "cartList"})
 public class Member extends BaseEntity implements UserDetails {
 
     @Id

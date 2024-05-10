@@ -2,8 +2,8 @@ package com.projectif.mokokomarket.board.controller;
 
 import com.projectif.mokokomarket.board.domain.Board;
 import com.projectif.mokokomarket.board.dto.request.BoardUpdateRequestDto;
-import com.projectif.mokokomarket.board.dto.response.BoardResponseDto;
 import com.projectif.mokokomarket.board.dto.request.BoardWriteRequestDto;
+import com.projectif.mokokomarket.board.dto.response.BoardResponseDto;
 import com.projectif.mokokomarket.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

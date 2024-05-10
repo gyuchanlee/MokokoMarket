@@ -3,17 +3,13 @@ import { Container, Row, Col, Card, ListGroup, ListGroupItem } from 'react-boots
 import './../css/memberInfo.css';
 import axios from "axios";
 import {getMember} from "../api/axios";
+import {useSelector} from "react-redux";
 
 const MemberInfo = ({ memberId }) => {
 
-    const [member, setMember] = useState({
-        // memberId: 99,
-        // userId: 'dodo96',
-        // name: '김도도',
-        // email: 'dodobird@naver.com',
-        // phone: '010-1234-1234',
-        // createdDateTime: Date.now()
-    });
+    const [member, setMember] = useState({});
+
+    const accessToken = useSelector((state) => state.SessionInfo).accessToken;
 
     useEffect(() => {
         /**
@@ -24,7 +20,7 @@ const MemberInfo = ({ memberId }) => {
          */
         const fetchData = async () => {
             try {
-                const result = await getMember(memberId);
+                const result = await getMember(memberId, accessToken);
                 console.log(result);
                 setMember(result);
             } catch (e) {

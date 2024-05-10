@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwtAxios from "../util/jwtUtil";
 
 // async - await : 비동기처럼 쓰고 싶을 때 (ES6임) -> 페이지 로딩될때 순서 보장이 필요할때 쓰면 좋을듯 (대부분 이거 쓰면 될듯함)
 // 이거 끌어다 쓰는 쪽 BoardList.js 나 BoardDetails.js 이런 쪽에서 적용해서 쓰면 좋을듯
@@ -23,8 +24,12 @@ axios.defaults.withCredentials = true; // withCredentials 전역 설정
 axios.defaults.baseURL = API_SERVER_HOST;
 
 // Board 한 건 조회
-export const getBoardOne = (id) => {
-    return axios.get(`${API_SERVER_HOST}/boards/${id}`)
+export const getBoardOne = (id, accessToken) => {
+    return jwtAxios.get(`${API_SERVER_HOST}/boards/${id}`, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
+    })
         .then((response) => {
             return response.data;
         })
@@ -47,13 +52,17 @@ export const getBoardList = () => {
 }
 
 // Board 생성
-export const writeBoard = (dto) => {
-    return axios.post(`${API_SERVER_HOST}/boards`, {
+export const writeBoard = (dto, accessToken) => {
+    return jwtAxios.post(`${API_SERVER_HOST}/boards`, {
         title: dto.title,
         content: dto.content,
         category: dto.category,
         level: dto.level,
         memberId: dto.memberId,
+    }, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -65,11 +74,15 @@ export const writeBoard = (dto) => {
 }
 
 // Board 수정
-export const updateBoard = (dto, id) => {
-    return axios.put(`${API_SERVER_HOST}/boards/${id}`, {
+export const updateBoard = (dto, id, accessToken) => {
+    return jwtAxios.put(`${API_SERVER_HOST}/boards/${id}`, {
         title: dto.title,
         content: dto.content,
         category: dto.category,
+    }, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -81,8 +94,12 @@ export const updateBoard = (dto, id) => {
 }
 
 // Board 삭제
-export const deleteBoard = (id) => {
-    return axios.delete(`${API_SERVER_HOST}/boards/${id}`)
+export const deleteBoard = (id, accessToken) => {
+    return jwtAxios.delete(`${API_SERVER_HOST}/boards/${id}`, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
+    })
         .then((response) => {
             return response.data;
         })
@@ -124,9 +141,12 @@ export const logout = () => {
 }
 
 // 회원 한 건 조회
-export const getMember = (memberId) => {
-    return axios.get(`${API_SERVER_HOST}/members/${memberId}`,{
-        headers : jsonHeaders
+export const getMember = (memberId, accessToken) => {
+    return jwtAxios.get(`${API_SERVER_HOST}/members/${memberId}`,{
+        headers : {
+            ...jsonHeaders,
+            "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -160,14 +180,16 @@ export const joinMember = (dto) => {
 }
 
 // 회원 수정 PUT
-export const updateMember = (dto, id) => {
-    return axios.put(`${API_SERVER_HOST}/members/${id}`, {
+export const updateMember = (dto, id, accessToken) => {
+    return jwtAxios.put(`${API_SERVER_HOST}/members/${id}`, {
         name: dto.name,
         email: dto.email,
         phone: dto.phone,
         password: dto.password,
     }, {
-        headers : jsonHeaders
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -179,9 +201,11 @@ export const updateMember = (dto, id) => {
 }
 
 // 회원 탈퇴 DELETE
-export const deleteMember = (id) => {
-    return axios.delete(`${API_SERVER_HOST}/members/${id}`,{
-        headers : jsonHeaders
+export const deleteMember = (id, accessToken) => {
+    return jwtAxios.delete(`${API_SERVER_HOST}/members/${id}`,{
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -193,8 +217,12 @@ export const deleteMember = (id) => {
 }
 
 // 주문 리스트 조회
-export const getOrder = () => {
-    return axios.get(`${API_SERVER_HOST}/orders`)
+export const getOrder = (accessToken) => {
+    return axios.get(`${API_SERVER_HOST}/orders`, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
+    })
         .then((response) => {
             return response.data;
         })
@@ -205,9 +233,11 @@ export const getOrder = () => {
 }
 
 // 한 회원의 주문 리스트 조회
-export const getOrderByMemberId = (memberId) => {
-    return axios.get(`${API_SERVER_HOST}/orders/${memberId}`, {
-        headers : jsonHeaders
+export const getOrderByMemberId = (memberId, accessToken) => {
+    return jwtAxios.get(`${API_SERVER_HOST}/orders/${memberId}`, {
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -219,8 +249,8 @@ export const getOrderByMemberId = (memberId) => {
 }
 
 // 결제 완료 -> 주문 한 건 생성
-export const createOrder = (dto) => {
-    return axios.post(`${API_SERVER_HOST}/orders`, {
+export const createOrder = (dto, accessToken) => {
+    return jwtAxios.post(`${API_SERVER_HOST}/orders`, {
         memberId: dto.memberId,
         paymentMethod: dto.paymentMethod,
         totalPrice: dto.totalPrice,
@@ -228,7 +258,9 @@ export const createOrder = (dto) => {
         orderStatus: dto.orderStatus,
         cartList: dto.cartList, // CartCreateDto 배열 형식이여야 함
     }, {
-        headers : jsonHeaders
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
@@ -240,9 +272,11 @@ export const createOrder = (dto) => {
 }
 
 // 회원 주문 한 건 취소
-export const cancelOrder = (id) => {
-    return axios.delete(`${API_SERVER_HOST}/orders/${id}`,{
-        headers : jsonHeaders
+export const cancelOrder = (id, accessToken) => {
+    return jwtAxios.delete(`${API_SERVER_HOST}/orders/${id}`,{
+        headers : {
+            ...jsonHeaders, "Authorization" : accessToken,
+        }
     })
         .then((response) => {
             return response.data;
