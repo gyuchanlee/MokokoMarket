@@ -82,13 +82,14 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("member not found"));
-        return User.builder()
-                .username(findMember.getUserId())
-                .password(findMember.getPassword())
-                .disabled(!findMember.isEnabled())
-                .accountExpired(!findMember.isAccountNonExpired())
-                .accountLocked(!findMember.isAccountNonLocked())
-                .roles(findMember.getRole().name())
-                .build();
+//        return User.builder()
+//                .username(findMember.getUserId())
+//                .password(findMember.getPassword())
+//                .disabled(!findMember.isEnabled())
+//                .accountExpired(!findMember.isAccountNonExpired())
+//                .accountLocked(!findMember.isAccountNonLocked())
+//                .roles(findMember.getRole().name())
+//                .build();
+        return findMember;
     }
 }

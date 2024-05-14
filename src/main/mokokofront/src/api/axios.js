@@ -27,7 +27,7 @@ axios.defaults.baseURL = API_SERVER_HOST;
 export const getBoardOne = (id, accessToken) => {
     return jwtAxios.get(`${API_SERVER_HOST}/boards/${id}`, {
         headers : {
-            ...jsonHeaders, "Authorization" : accessToken,
+            ...jsonHeaders, "Authorization" : accessToken
         }
     })
         .then((response) => {

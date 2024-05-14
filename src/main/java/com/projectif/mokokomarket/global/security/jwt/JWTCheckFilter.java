@@ -53,7 +53,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         // 체크할 필요 없는 경로들을 나열
         if (
                 path.startsWith("/items") || path.startsWith("/login") || path.startsWith("/logout") || (path.equals("/boards") && request.getMethod().equals("GET"))
-                || path.equals("/members/refresh")
         ) {
             return true;
         }
