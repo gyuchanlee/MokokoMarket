@@ -25,11 +25,7 @@
 - oauth2 : 연동 로그인 (카카오, 네이버, 구글 세개 동시에 관리해보기)
 - JPA : join, n+1문제 방지, 연관관계, 트랜잭션 관리
 - MVC : MVC 패턴에 맞게 제대로 쓰기
-- 객체지향 / solid 원칙을 생각하며 구현해보기 -> 잘모르겠으므로 일단 구현하고 리팩토링하면서 생각 ㄱㄱ
 - 세션관리 - JWT 사용해보기 + securtiy로 관리
-- java mail - 이메일 인증 (아이디 & 비밀번호 찾기)
-- 로그인 관련 처리 -> 리멤버미 이런거.
 
 ## CI / CD
-- ncp server에 github action 사용해서 자동 배포 도전해보기
-- 할 수 있으면 application.yml에 민감한 정보들 좀 properties로 빼서 따로 안전하게 관리하고 linux에도 똑같이 관리해보고 싶음
+- ncp server에 github action 사용해서 자동 배포 -> 현재 내려감
