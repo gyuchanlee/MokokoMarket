@@ -22,8 +22,7 @@
 - validation : 주고 받는 Dto 검증
 - exception : 전반적인 예외 처리해서 프론트로 던져주기
 - security : 보안 처리 + login
-- oauth2 : 연동 로그인 (카카오, 네이버, 구글 세개 동시에 관리해보기)
-- JPA : join, n+1문제 방지, 연관관계, 트랜잭션 관리
+- - JPA : join, n+1문제 방지, 연관관계, 트랜잭션 관리
 - MVC : MVC 패턴에 맞게 제대로 쓰기
 - 세션관리 - JWT 사용해보기 + securtiy로 관리
 
